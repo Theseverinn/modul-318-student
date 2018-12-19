@@ -43,11 +43,9 @@ namespace SwissTransport
             return null;
         }
 
-        public Connections GetConnections(string fromStation, string toStation)
+        public Connections GetConnections(string fromStation, string toStattion, string date, string time)
         {
-            fromStation = System.Uri.EscapeDataString(fromStation);
-            toStation = System.Uri.EscapeDataString(toStation);
-            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStation);
+            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStattion + "&date=" + date + "&time=" + time + "&limit=6");
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 
@@ -64,12 +62,13 @@ namespace SwissTransport
 
         private static WebRequest CreateWebRequest(string url)
         {
-            var request = WebRequest.Create(url);
-            var webProxy = WebRequest.DefaultWebProxy;
+            var request = WebRequest.Create(url); //URL wird übergeben z.B. http://transport.opendata.ch/v1/locations?query=Luzern
+
+            var webProxy = WebRequest.DefaultWebProxy; //z.B. 	http://transport.opendata.ch/v1/stationboard?Station=Luzern&id=8505000
 
             webProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
             request.Proxy = webProxy;
-            
+
             return request;
         }
     }
