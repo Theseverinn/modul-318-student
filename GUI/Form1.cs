@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SwissTransport;
+using System.Net.Mail;
 
 namespace GUI
 {
@@ -17,6 +18,7 @@ namespace GUI
         Transport transport = new Transport();
         Coordinate coordinate = new Coordinate();
         
+
         public Form1()
         {
             InitializeComponent();
@@ -135,25 +137,39 @@ namespace GUI
         private void txtNach_TextChanged(object sender, EventArgs e)
         {
             Get_Stations(txtNach.Text, lbxNach);
+
+
         }
 
         private void lbxVon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             txtVon.Text = lbxVon.SelectedItem.ToString();
-            btnSuchen.Focus();
             lbxVon.Visible = false;
+
+            if(btnSuchen.Visible == true)
+            {
+                txtNach.Focus();
+            }
+            else
+            {
+                btnAbfahrt.Focus();
+            }
         }
 
         private void lbxNach_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // macht es möglich dass man doppel klick auf einen vorschlag drücken kann und der dann eingefügt wird
             txtNach.Text = lbxNach.SelectedItem.ToString();
-            btnSuchen.Focus();
+            
+            //lässt die list box nach dem doppel klick verschwinden
             lbxNach.Visible = false;
         }
 
         private void btnSuchen_Click(object sender, EventArgs e)
         {
-            if(txtVon.Text == string.Empty)
+            // Wenn man den knopf Abfahrt gedrückt hat, die felder Von und Nach leer lässt kommt die fehler meldung dass man eine station angeben muss.
+            // Wenn man den knopf Abfahrt gedrückt hat und etwas eingegeben hatt wird die tabelle abgerufen
+            if (txtVon.Text == string.Empty)
             {
                 MessageBox.Show("Geben sie in die Textboxen von und nach eine Station ein", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -165,13 +181,15 @@ namespace GUI
 
         private void btnAbfahrt_Click(object sender, EventArgs e)
         {
-            if (btnAbfahrt.Text != string.Empty)
+            // Wenn man den knopf Abfahrt gedrückt hat und das feld Von leer lässt kommt die fehler meldung dass man eine station angeben muss.
+            // Wenn man den knopf Abfahrt gedrückt hat und etwas eingegeben hatt wird die tabelle abgerufen
+            if (btnAbfahrt.Text == string.Empty)
             {
-                Get_2_Grid();
+                MessageBox.Show("Geben sie in die Textboxen von und nach eine Station ein", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                MessageBox.Show("Bitte geben Sie einen Ort ein!");
+                Get_2_Grid();
             }
         }
 
@@ -191,8 +209,10 @@ namespace GUI
 
         private void rdoSuche_CheckedChanged(object sender, EventArgs e)
         {
+            //Wenn der radiobutton Suche gedrückt wurde erscheint alles wider bis auf den knopf abfahrt der verschwindet
             if (rdoSuche.Checked)
             {
+                // 
                 btnSuchen.Visible = true;
                 txtNach.Visible = true;
                 lbxNach.Visible = true;
@@ -200,6 +220,135 @@ namespace GUI
                 lblNach.Visible = true;
                 dtpDatum.Visible = true;
                 dtpTime.Visible = true;
+            }
+        }
+
+        private void txtVon_Click(object sender, EventArgs e)
+        {
+            // nach dem man in der list box einen ort doppel klickt verschwindet die lbx und so erscheint sie wieder wenn man auf die textbox drückt
+            lbxVon.Visible = true;
+        }
+
+        private void txtNach_Click(object sender, EventArgs e)
+        {
+            // nach dem man in der list box einen ort doppel klickt verschwindet die lbx und so erscheint sie wieder wenn man auf die textbox drückt
+            lbxNach.Visible = true; 
+        }
+
+        private void creategmapstation(string x, string y)
+        {
+            string url = "https://www.google.ch/maps/place/" + x + "," + y;
+            wbGmaps.Navigate(url);
+        }
+
+        private void btnGmaps_Click(object sender, EventArgs e)
+        {
+            btnclose.Visible = true;
+            wbGmaps.Visible = true;
+            if (txtStation.Text != string.Empty)
+            {
+                Stations stations = transport.GetStations(txtStation.Text);
+                Station station = stations.StationList[0];
+                creategmapstation(Convert.ToString(station.Coordinate.XCoordinate).Replace(',', '.'), Convert.ToString(station.Coordinate.YCoordinate).Replace(',', '.'));
+            }
+            else
+            {
+                MessageBox.Show("Gib eine Station an","Station nicht gefunden", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnclose_Click(object sender, EventArgs e)
+        {
+            btnclose.Visible = false;
+            wbGmaps.Visible = false;
+        }
+
+        private void txtVon_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ( e.KeyCode == Keys.Down)
+            {
+                lbxVon.Focus();
+                lbxVon.SelectedIndex = -1;
+            }
+            if(e.KeyCode == Keys.Up)
+            {
+                lbxVon.Focus();
+                lbxVon.SelectedIndex = +1;
+            }
+        }
+
+        private void lbxVon_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (btnSuchen.Visible == true)
+                {
+                    txtVon.Text = Convert.ToString(lbxVon.SelectedItem);
+                    lbxVon.Visible = false;
+                    txtNach.Focus();
+                }
+                else
+                {
+
+                    txtVon.Text = Convert.ToString(lbxVon.SelectedItem);
+                    lbxVon.Visible = false;
+                    btnAbfahrt.Focus();
+                }
+            }
+        }
+
+        private void txtNach_KeyDown(object sender, KeyEventArgs e)
+        {
+            /*if (e.KeyCode == Keys.Down)
+            {
+                lbxNach.Focus();                            Ich habe hier versuch zu machen dass ich mit den pfeil tasten in der listbox rumsuchen kann
+                lbxNach.SelectedIndex = -1;                 aber aus irgendeinem grund drückt es enter ich habe den fehler nicht gefunden
+            }
+            if (e.KeyCode == Keys.Up)                           
+            {
+                lbxNach.Focus();
+                lbxNach.SelectedIndex = +1;
+            }*/
+        }
+
+        private void lbxNach_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                txtNach.Text = Convert.ToString(lbxNach.SelectedItem);
+                lbxNach.Visible = false;
+                btnSuchen.Focus();
+
+            }
+        }
+
+        private void btnEmailsenden_Click(object sender, EventArgs e)
+        {
+            if (txtEmail.Text == "")
+                MessageBox.Show("Bitte geben Sie eine Email-Adresse ein!");
+            else
+            {
+                try
+                {
+                    MailMessage mail = new MailMessage();
+                    mail.From = new MailAddress("modul319.severinvonrotz@gmail.com");
+                    mail.To.Add(new MailAddress(Convert.ToString(this.txtEmail)));
+                    mail.Subject = "Fahrplan tabelle";
+                    mail.Body = "Das ist die Email für den fahrplan den sie wollten. ";
+                    mail.Body += "<b>" + Get_TableFromDataGrid() + "</b>";
+                    mail.IsBodyHtml = true;
+                    SmtpClient SmtpServer = new SmtpClient();
+                    SmtpServer.Host = "smtp.gmail.com";
+                    SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("modul319.severinvonrotz@gmail.com", "Kennwort$11");
+                    SmtpServer.EnableSsl = true;
+                    SmtpServer.Send(mail);
+                    MessageBox.Show("Email wurde erfolgreich gesendet");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error: ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

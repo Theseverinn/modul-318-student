@@ -32,8 +32,9 @@
             this.dtpTime = new System.Windows.Forms.DateTimePicker();
             this.btnEmailsenden = new System.Windows.Forms.Button();
             this.txtEmail = new System.Windows.Forms.TextBox();
-            this.lblEmail = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grpFahrplan = new System.Windows.Forms.GroupBox();
+            this.rdoSuche = new System.Windows.Forms.RadioButton();
+            this.rdoAbfahrt = new System.Windows.Forms.RadioButton();
             this.btnAbfahrt = new System.Windows.Forms.Button();
             this.lbxNach = new System.Windows.Forms.ListBox();
             this.lbxVon = new System.Windows.Forms.ListBox();
@@ -43,10 +44,16 @@
             this.btnSuchen = new System.Windows.Forms.Button();
             this.txtVon = new System.Windows.Forms.TextBox();
             this.dgvFahrplan = new System.Windows.Forms.DataGridView();
-            this.rdoAbfahrt = new System.Windows.Forms.RadioButton();
-            this.rdoSuche = new System.Windows.Forms.RadioButton();
-            this.groupBox1.SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grpGmap = new System.Windows.Forms.GroupBox();
+            this.btnclose = new System.Windows.Forms.Button();
+            this.txtStation = new System.Windows.Forms.TextBox();
+            this.btnGmaps = new System.Windows.Forms.Button();
+            this.wbGmaps = new System.Windows.Forms.WebBrowser();
+            this.grpFahrplan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFahrplan)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.grpGmap.SuspendLayout();
             this.SuspendLayout();
             // 
             // dtpDatum
@@ -57,7 +64,7 @@
             this.dtpDatum.MinDate = new System.DateTime(2018, 12, 12, 0, 0, 0, 0);
             this.dtpDatum.Name = "dtpDatum";
             this.dtpDatum.Size = new System.Drawing.Size(103, 20);
-            this.dtpDatum.TabIndex = 0;
+            this.dtpDatum.TabIndex = 5;
             this.dtpDatum.Value = new System.DateTime(2018, 12, 19, 11, 32, 55, 0);
             // 
             // dtpTime
@@ -68,63 +75,76 @@
             this.dtpTime.Name = "dtpTime";
             this.dtpTime.ShowUpDown = true;
             this.dtpTime.Size = new System.Drawing.Size(53, 20);
-            this.dtpTime.TabIndex = 1;
+            this.dtpTime.TabIndex = 6;
             // 
             // btnEmailsenden
             // 
-            this.btnEmailsenden.Location = new System.Drawing.Point(606, 132);
+            this.btnEmailsenden.Location = new System.Drawing.Point(6, 150);
             this.btnEmailsenden.Name = "btnEmailsenden";
-            this.btnEmailsenden.Size = new System.Drawing.Size(164, 48);
-            this.btnEmailsenden.TabIndex = 2;
+            this.btnEmailsenden.Size = new System.Drawing.Size(163, 30);
+            this.btnEmailsenden.TabIndex = 15;
             this.btnEmailsenden.Text = "Email Senden";
             this.btnEmailsenden.UseVisualStyleBackColor = true;
+            this.btnEmailsenden.Click += new System.EventHandler(this.btnEmailsenden_Click);
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(606, 106);
+            this.txtEmail.Location = new System.Drawing.Point(6, 124);
             this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(164, 20);
-            this.txtEmail.TabIndex = 3;
+            this.txtEmail.Size = new System.Drawing.Size(163, 20);
+            this.txtEmail.TabIndex = 14;
             // 
-            // lblEmail
+            // grpFahrplan
             // 
-            this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new System.Drawing.Point(603, 90);
-            this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(89, 13);
-            this.lblEmail.TabIndex = 4;
-            this.lblEmail.Text = "An Email senden:";
+            this.grpFahrplan.Controls.Add(this.rdoSuche);
+            this.grpFahrplan.Controls.Add(this.rdoAbfahrt);
+            this.grpFahrplan.Controls.Add(this.btnAbfahrt);
+            this.grpFahrplan.Controls.Add(this.lbxNach);
+            this.grpFahrplan.Controls.Add(this.lbxVon);
+            this.grpFahrplan.Controls.Add(this.txtNach);
+            this.grpFahrplan.Controls.Add(this.lblNach);
+            this.grpFahrplan.Controls.Add(this.lblVon);
+            this.grpFahrplan.Controls.Add(this.btnSuchen);
+            this.grpFahrplan.Controls.Add(this.txtVon);
+            this.grpFahrplan.Controls.Add(this.dtpTime);
+            this.grpFahrplan.Controls.Add(this.dtpDatum);
+            this.grpFahrplan.Location = new System.Drawing.Point(12, 12);
+            this.grpFahrplan.Name = "grpFahrplan";
+            this.grpFahrplan.Size = new System.Drawing.Size(430, 191);
+            this.grpFahrplan.TabIndex = 5;
+            this.grpFahrplan.TabStop = false;
+            this.grpFahrplan.Text = "Fahrplan";
             // 
-            // groupBox1
+            // rdoSuche
             // 
-            this.groupBox1.Controls.Add(this.rdoSuche);
-            this.groupBox1.Controls.Add(this.rdoAbfahrt);
-            this.groupBox1.Controls.Add(this.lblEmail);
-            this.groupBox1.Controls.Add(this.btnAbfahrt);
-            this.groupBox1.Controls.Add(this.txtEmail);
-            this.groupBox1.Controls.Add(this.btnEmailsenden);
-            this.groupBox1.Controls.Add(this.lbxNach);
-            this.groupBox1.Controls.Add(this.lbxVon);
-            this.groupBox1.Controls.Add(this.txtNach);
-            this.groupBox1.Controls.Add(this.lblNach);
-            this.groupBox1.Controls.Add(this.lblVon);
-            this.groupBox1.Controls.Add(this.btnSuchen);
-            this.groupBox1.Controls.Add(this.txtVon);
-            this.groupBox1.Controls.Add(this.dtpTime);
-            this.groupBox1.Controls.Add(this.dtpDatum);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(776, 191);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.rdoSuche.AutoSize = true;
+            this.rdoSuche.Checked = true;
+            this.rdoSuche.Location = new System.Drawing.Point(284, 15);
+            this.rdoSuche.Name = "rdoSuche";
+            this.rdoSuche.Size = new System.Drawing.Size(56, 17);
+            this.rdoSuche.TabIndex = 9;
+            this.rdoSuche.TabStop = true;
+            this.rdoSuche.Text = "Suche";
+            this.rdoSuche.UseVisualStyleBackColor = true;
+            this.rdoSuche.CheckedChanged += new System.EventHandler(this.rdoSuche_CheckedChanged);
+            // 
+            // rdoAbfahrt
+            // 
+            this.rdoAbfahrt.AutoSize = true;
+            this.rdoAbfahrt.Location = new System.Drawing.Point(346, 15);
+            this.rdoAbfahrt.Name = "rdoAbfahrt";
+            this.rdoAbfahrt.Size = new System.Drawing.Size(84, 17);
+            this.rdoAbfahrt.TabIndex = 10;
+            this.rdoAbfahrt.Text = "Abfahrtsplan";
+            this.rdoAbfahrt.UseVisualStyleBackColor = true;
+            this.rdoAbfahrt.CheckedChanged += new System.EventHandler(this.rdoAbfahrt_CheckedChanged);
             // 
             // btnAbfahrt
             // 
             this.btnAbfahrt.Location = new System.Drawing.Point(148, 32);
             this.btnAbfahrt.Name = "btnAbfahrt";
             this.btnAbfahrt.Size = new System.Drawing.Size(103, 21);
-            this.btnAbfahrt.TabIndex = 11;
+            this.btnAbfahrt.TabIndex = 8;
             this.btnAbfahrt.Text = "Abfahrts tabelle";
             this.btnAbfahrt.UseVisualStyleBackColor = true;
             this.btnAbfahrt.Visible = false;
@@ -136,8 +156,9 @@
             this.lbxNach.Location = new System.Drawing.Point(148, 59);
             this.lbxNach.Name = "lbxNach";
             this.lbxNach.Size = new System.Drawing.Size(133, 121);
-            this.lbxNach.TabIndex = 10;
+            this.lbxNach.TabIndex = 4;
             this.lbxNach.SelectedIndexChanged += new System.EventHandler(this.lbxNach_SelectedIndexChanged);
+            this.lbxNach.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxNach_KeyDown);
             // 
             // lbxVon
             // 
@@ -145,7 +166,8 @@
             this.lbxVon.Location = new System.Drawing.Point(9, 59);
             this.lbxVon.Name = "lbxVon";
             this.lbxVon.Size = new System.Drawing.Size(133, 121);
-            this.lbxVon.TabIndex = 9;
+            this.lbxVon.TabIndex = 2;
+            this.lbxVon.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxVon_KeyDown);
             this.lbxVon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbxVon_MouseDoubleClick);
             // 
             // txtNach
@@ -153,8 +175,10 @@
             this.txtNach.Location = new System.Drawing.Point(148, 33);
             this.txtNach.Name = "txtNach";
             this.txtNach.Size = new System.Drawing.Size(133, 20);
-            this.txtNach.TabIndex = 8;
+            this.txtNach.TabIndex = 3;
+            this.txtNach.Click += new System.EventHandler(this.txtNach_Click);
             this.txtNach.TextChanged += new System.EventHandler(this.txtNach_TextChanged);
+            this.txtNach.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNach_KeyDown);
             // 
             // lblNach
             // 
@@ -179,7 +203,7 @@
             this.btnSuchen.Location = new System.Drawing.Point(287, 32);
             this.btnSuchen.Name = "btnSuchen";
             this.btnSuchen.Size = new System.Drawing.Size(75, 21);
-            this.btnSuchen.TabIndex = 5;
+            this.btnSuchen.TabIndex = 7;
             this.btnSuchen.Text = "Suchen";
             this.btnSuchen.UseVisualStyleBackColor = true;
             this.btnSuchen.Click += new System.EventHandler(this.btnSuchen_Click);
@@ -189,8 +213,10 @@
             this.txtVon.Location = new System.Drawing.Point(9, 33);
             this.txtVon.Name = "txtVon";
             this.txtVon.Size = new System.Drawing.Size(133, 20);
-            this.txtVon.TabIndex = 2;
+            this.txtVon.TabIndex = 1;
+            this.txtVon.Click += new System.EventHandler(this.txtVon_Click);
             this.txtVon.TextChanged += new System.EventHandler(this.txtVon_TextChanged);
+            this.txtVon.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtVon_KeyDown);
             // 
             // dgvFahrplan
             // 
@@ -198,46 +224,88 @@
             this.dgvFahrplan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvFahrplan.Location = new System.Drawing.Point(12, 209);
             this.dgvFahrplan.Name = "dgvFahrplan";
-            this.dgvFahrplan.Size = new System.Drawing.Size(776, 195);
+            this.dgvFahrplan.Size = new System.Drawing.Size(875, 343);
             this.dgvFahrplan.TabIndex = 6;
             // 
-            // rdoAbfahrt
+            // groupBox1
             // 
-            this.rdoAbfahrt.AutoSize = true;
-            this.rdoAbfahrt.Location = new System.Drawing.Point(368, 15);
-            this.rdoAbfahrt.Name = "rdoAbfahrt";
-            this.rdoAbfahrt.Size = new System.Drawing.Size(84, 17);
-            this.rdoAbfahrt.TabIndex = 12;
-            this.rdoAbfahrt.TabStop = true;
-            this.rdoAbfahrt.Text = "Abfahrtsplan";
-            this.rdoAbfahrt.UseVisualStyleBackColor = true;
-            this.rdoAbfahrt.CheckedChanged += new System.EventHandler(this.rdoAbfahrt_CheckedChanged);
+            this.groupBox1.Controls.Add(this.txtEmail);
+            this.groupBox1.Controls.Add(this.btnEmailsenden);
+            this.groupBox1.Location = new System.Drawing.Point(712, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(175, 191);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Fahr plan an Email senden";
             // 
-            // rdoSuche
+            // grpGmap
             // 
-            this.rdoSuche.AutoSize = true;
-            this.rdoSuche.Checked = true;
-            this.rdoSuche.Location = new System.Drawing.Point(306, 15);
-            this.rdoSuche.Name = "rdoSuche";
-            this.rdoSuche.Size = new System.Drawing.Size(56, 17);
-            this.rdoSuche.TabIndex = 13;
-            this.rdoSuche.TabStop = true;
-            this.rdoSuche.Text = "Suche";
-            this.rdoSuche.UseVisualStyleBackColor = true;
-            this.rdoSuche.CheckedChanged += new System.EventHandler(this.rdoSuche_CheckedChanged);
+            this.grpGmap.Controls.Add(this.btnclose);
+            this.grpGmap.Controls.Add(this.txtStation);
+            this.grpGmap.Controls.Add(this.btnGmaps);
+            this.grpGmap.Location = new System.Drawing.Point(448, 12);
+            this.grpGmap.Name = "grpGmap";
+            this.grpGmap.Size = new System.Drawing.Size(258, 191);
+            this.grpGmap.TabIndex = 8;
+            this.grpGmap.TabStop = false;
+            this.grpGmap.Text = "Google Maps";
+            // 
+            // btnclose
+            // 
+            this.btnclose.Location = new System.Drawing.Point(6, 150);
+            this.btnclose.Name = "btnclose";
+            this.btnclose.Size = new System.Drawing.Size(30, 30);
+            this.btnclose.TabIndex = 13;
+            this.btnclose.Text = "X";
+            this.btnclose.UseVisualStyleBackColor = true;
+            this.btnclose.Click += new System.EventHandler(this.btnclose_Click);
+            // 
+            // txtStation
+            // 
+            this.txtStation.Location = new System.Drawing.Point(6, 124);
+            this.txtStation.Name = "txtStation";
+            this.txtStation.Size = new System.Drawing.Size(246, 20);
+            this.txtStation.TabIndex = 11;
+            // 
+            // btnGmaps
+            // 
+            this.btnGmaps.Location = new System.Drawing.Point(42, 150);
+            this.btnGmaps.Name = "btnGmaps";
+            this.btnGmaps.Size = new System.Drawing.Size(210, 30);
+            this.btnGmaps.TabIndex = 12;
+            this.btnGmaps.Text = "Google Maps";
+            this.btnGmaps.UseVisualStyleBackColor = true;
+            this.btnGmaps.Click += new System.EventHandler(this.btnGmaps_Click);
+            // 
+            // wbGmaps
+            // 
+            this.wbGmaps.Location = new System.Drawing.Point(12, 209);
+            this.wbGmaps.MinimumSize = new System.Drawing.Size(20, 20);
+            this.wbGmaps.Name = "wbGmaps";
+            this.wbGmaps.Size = new System.Drawing.Size(875, 343);
+            this.wbGmaps.TabIndex = 9;
+            this.wbGmaps.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 416);
+            this.ClientSize = new System.Drawing.Size(899, 564);
+            this.Controls.Add(this.wbGmaps);
             this.Controls.Add(this.dgvFahrplan);
+            this.Controls.Add(this.grpGmap);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.grpFahrplan);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.grpFahrplan.ResumeLayout(false);
+            this.grpFahrplan.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFahrplan)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFahrplan)).EndInit();
+            this.grpGmap.ResumeLayout(false);
+            this.grpGmap.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -248,8 +316,7 @@
         private System.Windows.Forms.DateTimePicker dtpTime;
         private System.Windows.Forms.Button btnEmailsenden;
         private System.Windows.Forms.TextBox txtEmail;
-        private System.Windows.Forms.Label lblEmail;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox grpFahrplan;
         private System.Windows.Forms.DataGridView dgvFahrplan;
         private System.Windows.Forms.TextBox txtNach;
         private System.Windows.Forms.Label lblNach;
@@ -261,6 +328,12 @@
         private System.Windows.Forms.Button btnAbfahrt;
         private System.Windows.Forms.RadioButton rdoSuche;
         private System.Windows.Forms.RadioButton rdoAbfahrt;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox grpGmap;
+        private System.Windows.Forms.TextBox txtStation;
+        private System.Windows.Forms.Button btnGmaps;
+        private System.Windows.Forms.WebBrowser wbGmaps;
+        private System.Windows.Forms.Button btnclose;
     }
 }
 
