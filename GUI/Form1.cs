@@ -167,6 +167,9 @@ namespace GUI
 
         private void btnSuchen_Click(object sender, EventArgs e)
         {
+            // fals mann die map noch offen hat wird sie versteckt dass man den fahrplan sieht
+            btnclose.Visible = false;
+            wbGmaps.Visible = false;
             // Wenn man den knopf Abfahrt gedrückt hat, die felder Von und Nach leer lässt kommt die fehler meldung dass man eine station angeben muss.
             // Wenn man den knopf Abfahrt gedrückt hat und etwas eingegeben hatt wird die tabelle abgerufen
             if (txtVon.Text == string.Empty)
@@ -181,6 +184,9 @@ namespace GUI
 
         private void btnAbfahrt_Click(object sender, EventArgs e)
         {
+            // fals mann die map noch offen hat wird sie versteckt dass man den fahrplan sieht
+            btnclose.Visible = false;
+            wbGmaps.Visible = false;
             // Wenn man den knopf Abfahrt gedrückt hat und das feld Von leer lässt kommt die fehler meldung dass man eine station angeben muss.
             // Wenn man den knopf Abfahrt gedrückt hat und etwas eingegeben hatt wird die tabelle abgerufen
             if (btnAbfahrt.Text == string.Empty)
