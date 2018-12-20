@@ -21,6 +21,8 @@ namespace GUI
         {
             InitializeComponent();
         }
+
+        
         private void Get_Stations(string text, ListBox listBox)
         {
             if (text.Length >= 3)
@@ -101,7 +103,7 @@ namespace GUI
             dtt_routes.Columns.Add("Linie");
 
             //Definieren der Station für die Abfahrtstafel (Inhalt der Textbox wird übergeben)
-            Station station = transport.GetStations(btnAbfahrt.Text).StationList.First();
+            Station station = transport.GetStations(txtVon.Text).StationList.First();
             StationBoardRoot departures = transport.GetStationBoard(station.Name, station.Id); //Beispiel für station.name ist Luzern, Beispiel für station.Id = 8505000
 
             foreach (StationBoard station_b in departures.Entries)
@@ -125,20 +127,80 @@ namespace GUI
             return time2;
         }
 
+        private void txtVon_TextChanged(object sender, EventArgs e)
+        {
+            Get_Stations(txtVon.Text, lbxVon);
+        }
 
+        private void txtNach_TextChanged(object sender, EventArgs e)
+        {
+            Get_Stations(txtNach.Text, lbxNach);
+        }
 
+        private void lbxVon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            txtVon.Text = lbxVon.SelectedItem.ToString();
+            btnSuchen.Focus();
+            lbxVon.Visible = false;
+        }
 
+        private void lbxNach_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtNach.Text = lbxNach.SelectedItem.ToString();
+            btnSuchen.Focus();
+            lbxNach.Visible = false;
+        }
 
+        private void btnSuchen_Click(object sender, EventArgs e)
+        {
+            if(txtVon.Text == string.Empty)
+            {
+                MessageBox.Show("Geben sie in die Textboxen von und nach eine Station ein", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                Get_Grid();
+            }
+        }
 
+        private void btnAbfahrt_Click(object sender, EventArgs e)
+        {
+            if (btnAbfahrt.Text != string.Empty)
+            {
+                Get_2_Grid();
+            }
+            else
+            {
+                MessageBox.Show("Bitte geben Sie einen Ort ein!");
+            }
+        }
 
+        private void rdoAbfahrt_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoAbfahrt.Checked)
+            {
+                btnSuchen.Visible = false;
+                txtNach.Visible = false;
+                lbxNach.Visible = false;
+                btnAbfahrt.Visible = true;
+                lblNach.Visible = false;
+                dtpDatum.Visible = false;
+                dtpTime.Visible = false;
+            }
+        }
 
-
-
-
-
-
-
-
-
+        private void rdoSuche_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoSuche.Checked)
+            {
+                btnSuchen.Visible = true;
+                txtNach.Visible = true;
+                lbxNach.Visible = true;
+                btnAbfahrt.Visible = false;
+                lblNach.Visible = true;
+                dtpDatum.Visible = true;
+                dtpTime.Visible = true;
+            }
+        }
     }
 }
