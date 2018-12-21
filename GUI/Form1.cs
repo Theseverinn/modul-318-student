@@ -373,16 +373,19 @@ namespace GUI
 
         private void txtStation_TextChanged(object sender, EventArgs e)
         {
+            // erstellt die suchfunktion
             GetStations(txtStation.Text, lbxStation);
         }
 
         private void txtStation_Click(object sender, EventArgs e)
         {
+            // wenn man in die textbox geht wird die liste angezeigt
             lbxStation.Visible = true;
         }
 
         private void lbxStation_KeyDown(object sender, KeyEventArgs e)
         {
+            // macht es möglich die auswahl mit Enter ein zu fügen
             if (e.KeyCode == Keys.Enter)
             {
                 txtStation.Text = Convert.ToString(lbxStation.SelectedItem);
@@ -394,11 +397,13 @@ namespace GUI
 
         private void txtStation_KeyDown(object sender, KeyEventArgs e)
         {
+            // Mit der pfeil taste Runter kann man in der listbox Station eine auswahl nach unten gehen wenn man in der textbox Station ist.
             if (e.KeyCode == Keys.Down)
             {
                 lbxStation.Focus();
                 lbxStation.SelectedIndex = -1;
             }
+            // Mit der pfeil taste hoch kann man in der listbox Station eine auswahl nach oben gehen wenn man in der textbox Station ist.
             if (e.KeyCode == Keys.Up)
             {
                 lbxStation.Focus();
@@ -408,6 +413,7 @@ namespace GUI
 
         private void lbxStation_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            // man kann mit doppel klick ind die listbox eine station oben in di text box einfügen
             txtStation.Text = lbxStation.SelectedItem.ToString();
             lbxStation.Visible = false;
         }
@@ -425,6 +431,7 @@ namespace GUI
             }
             else
             {
+                // fals man keine station angegeben hat kommt diese error meldung
                 MessageBox.Show("Gib eine Station an", "Station nicht gefunden", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -445,6 +452,7 @@ namespace GUI
         {
             googleMapsStationsNearUrl();
             wbGmaps.Visible = true;
+            btnclose.Visible = true;
         }
 
         private void btnclose_Click(object sender, EventArgs e)

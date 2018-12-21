@@ -46,12 +46,12 @@
             this.dgvFahrplan = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.grpGmap = new System.Windows.Forms.GroupBox();
+            this.btnNear = new System.Windows.Forms.Button();
+            this.lbxStation = new System.Windows.Forms.ListBox();
             this.btnclose = new System.Windows.Forms.Button();
             this.txtStation = new System.Windows.Forms.TextBox();
             this.btnGmaps = new System.Windows.Forms.Button();
             this.wbGmaps = new System.Windows.Forms.WebBrowser();
-            this.lbxStation = new System.Windows.Forms.ListBox();
-            this.btnNear = new System.Windows.Forms.Button();
             this.grpFahrplan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFahrplan)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -228,6 +228,7 @@
             // dgvFahrplan
             // 
             this.dgvFahrplan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvFahrplan.BackgroundColor = System.Drawing.Color.Black;
             this.dgvFahrplan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvFahrplan.Location = new System.Drawing.Point(12, 209);
             this.dgvFahrplan.Name = "dgvFahrplan";
@@ -261,6 +262,28 @@
             this.grpGmap.TabStop = false;
             this.grpGmap.Text = "Google Maps";
             // 
+            // btnNear
+            // 
+            this.btnNear.ForeColor = System.Drawing.Color.Black;
+            this.btnNear.Location = new System.Drawing.Point(151, 150);
+            this.btnNear.Name = "btnNear";
+            this.btnNear.Size = new System.Drawing.Size(101, 30);
+            this.btnNear.TabIndex = 15;
+            this.btnNear.Text = "Nächste Station";
+            this.btnNear.UseVisualStyleBackColor = true;
+            this.btnNear.Click += new System.EventHandler(this.btnNear_Click);
+            // 
+            // lbxStation
+            // 
+            this.lbxStation.FormattingEnabled = true;
+            this.lbxStation.Location = new System.Drawing.Point(6, 59);
+            this.lbxStation.Name = "lbxStation";
+            this.lbxStation.Size = new System.Drawing.Size(246, 82);
+            this.lbxStation.TabIndex = 14;
+            this.lbxStation.Visible = false;
+            this.lbxStation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxStation_KeyDown);
+            this.lbxStation.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbxStation_MouseDoubleClick);
+            // 
             // btnclose
             // 
             this.btnclose.ForeColor = System.Drawing.Color.Black;
@@ -270,6 +293,7 @@
             this.btnclose.TabIndex = 13;
             this.btnclose.Text = "X";
             this.btnclose.UseVisualStyleBackColor = true;
+            this.btnclose.Visible = false;
             this.btnclose.Click += new System.EventHandler(this.btnclose_Click);
             // 
             // txtStation
@@ -301,28 +325,6 @@
             this.wbGmaps.Size = new System.Drawing.Size(875, 343);
             this.wbGmaps.TabIndex = 9;
             this.wbGmaps.Visible = false;
-            // 
-            // lbxStation
-            // 
-            this.lbxStation.FormattingEnabled = true;
-            this.lbxStation.Location = new System.Drawing.Point(6, 59);
-            this.lbxStation.Name = "lbxStation";
-            this.lbxStation.Size = new System.Drawing.Size(246, 82);
-            this.lbxStation.TabIndex = 14;
-            this.lbxStation.Visible = false;
-            this.lbxStation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxStation_KeyDown);
-            this.lbxStation.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbxStation_MouseDoubleClick);
-            // 
-            // btnNear
-            // 
-            this.btnNear.ForeColor = System.Drawing.Color.Black;
-            this.btnNear.Location = new System.Drawing.Point(151, 150);
-            this.btnNear.Name = "btnNear";
-            this.btnNear.Size = new System.Drawing.Size(101, 30);
-            this.btnNear.TabIndex = 15;
-            this.btnNear.Text = "Nächste Station";
-            this.btnNear.UseVisualStyleBackColor = true;
-            this.btnNear.Click += new System.EventHandler(this.btnNear_Click);
             // 
             // Form1
             // 
