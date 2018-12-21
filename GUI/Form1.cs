@@ -24,23 +24,32 @@ namespace GUI
             InitializeComponent();
         }
 
-        
-        private void Get_Stations(string text, ListBox listBox)
+        #region Methoden
+
+        private void GetStations(string text, ListBox listBox)
         {
-            if (text.Length >= 3)
+            try
             {
-                listBox.Items.Clear();
-                Stations stations = transport.GetStations(text);
-                foreach (Station station in stations.StationList)
+                if (text.Length >= 3)
                 {
-                    listBox.Items.Add(station.Name);
-                    listBox.Visible = true;
-                    listBox.BringToFront();
+                    listBox.Items.Clear();
+                    Stations stations = transport.GetStations(text);
+                    foreach (Station station in stations.StationList)
+                    {
+                        listBox.Items.Add(station.Name);
+                        listBox.Visible = true;
+                        listBox.BringToFront();
+                    }
                 }
             }
+            catch
+            {
+                MessageBox.Show("Error", "Station wurde nicht gefunden", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
-        public string Get_TableFromDataGrid()
+        public string GetTableFromDataGrid()
         {
             StringBuilder strTable = new StringBuilder();
             try
@@ -73,7 +82,7 @@ namespace GUI
             return strTable.ToString();
         }
 
-        private void Get_Grid()
+        private void GetGrid()
         {
             Cursor.Current = Cursors.WaitCursor;
             DataTable dtt_connections = new DataTable();
@@ -87,80 +96,89 @@ namespace GUI
             //Abfrage
             Connections connections = transport.GetConnections(txtVon.Text, txtNach.Text, dtpDatum.Value.ToString("yyyy-MM-dd"), dtpTime.Text);
 
-            //Jedes Resulatat zur Liste hinzufügen
+            //fügt jede station zu den listen hinzu
             foreach (Connection connection in connections.ConnectionList)
             {
-                dtt_connections.Rows.Add(Get_Date(connection.From.Departure), connection.From.Station.Name, Get_Time(connection.From.Departure), connection.To.Station.Name, Get_Time(connection.To.Arrival), connection.To.Platform);
+                dtt_connections.Rows.Add(GetDate(connection.From.Departure), connection.From.Station.Name, GetTime(connection.From.Departure), connection.To.Station.Name, GetTime(connection.To.Arrival), connection.To.Platform);
             }
 
             dgvFahrplan.DataSource = dtt_connections;
             UseWaitCursor = false;
         }
 
-        private void Get_2_Grid()
+        private void GetGrid2()
         {
             DataTable dtt_routes = new DataTable();
             dtt_routes.Columns.Add("Zeit");
             dtt_routes.Columns.Add("Nach");
             dtt_routes.Columns.Add("Linie");
 
-            //Definieren der Station für die Abfahrtstafel (Inhalt der Textbox wird übergeben)
+            
             Station station = transport.GetStations(txtVon.Text).StationList.First();
-            StationBoardRoot departures = transport.GetStationBoard(station.Name, station.Id); //Beispiel für station.name ist Luzern, Beispiel für station.Id = 8505000
+            StationBoardRoot departures = transport.GetStationBoard(station.Name, station.Id); 
 
             foreach (StationBoard station_b in departures.Entries)
             {
-                dtt_routes.Rows.Add(Get_Time(station_b.Stop.Departure.ToString()), station_b.To, (station_b.Category + " " + station_b.Number)); //Jede Linie die gefunden wird, wird hier durchgegangen
+                dtt_routes.Rows.Add(GetTime(station_b.Stop.Departure.ToString()), station_b.To, (station_b.Category + " " + station_b.Number)); 
             }
 
             dgvFahrplan.DataSource = dtt_routes;
         }
-        private string Get_Date(string date1)
+
+        private string GetDate(string date1)
         {
             string date2 = date1.Remove(10);
             DateTime date3 = Convert.ToDateTime(date2);
             return date3.ToString("dd.MM.yyyy");
         }
 
-        private string Get_Time(string time1) //Zeit kommt so 13:25:00 und die letzen 2 Stellen :00 werden hier gelöscht.
+        private string GetTime(string time1) 
         {
+            //z.B. zei 14:42:00 die sekunden anzahl "00" wird hier entfernt
             string time2 = time1.Remove(0, 11);
             time2 = time2.Remove(5);
             return time2;
         }
 
+        #endregion
+
+        #region Such und Abfahrts funktion
+
         private void txtVon_TextChanged(object sender, EventArgs e)
         {
-            Get_Stations(txtVon.Text, lbxVon);
+            //ruft die Stations vorschlläge in der listbox von ab
+            GetStations(txtVon.Text, lbxVon);
         }
 
         private void txtNach_TextChanged(object sender, EventArgs e)
         {
-            Get_Stations(txtNach.Text, lbxNach);
-
-
+            //ruft die Stations vorschlläge in der listbox Nach ab
+            GetStations(txtNach.Text, lbxNach);
         }
 
         private void lbxVon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            //Durch das kann man mit doppel klick auf eine Station in den vorschläge sie in die text box einfügen.
             txtVon.Text = lbxVon.SelectedItem.ToString();
             lbxVon.Visible = false;
 
+            //fals der radiobutton für das suchen sichtbar ist wird der fokus auf die textbox nach gesetzt
             if(btnSuchen.Visible == true)
             {
                 txtNach.Focus();
             }
+            //fals nicht geht der fokus auf den knopf abfahrt.
             else
             {
                 btnAbfahrt.Focus();
             }
         }
 
-        private void lbxNach_SelectedIndexChanged(object sender, EventArgs e)
+        private void lbxNach_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             // macht es möglich dass man doppel klick auf einen vorschlag drücken kann und der dann eingefügt wird
             txtNach.Text = lbxNach.SelectedItem.ToString();
-            
+
             //lässt die list box nach dem doppel klick verschwinden
             lbxNach.Visible = false;
         }
@@ -170,7 +188,7 @@ namespace GUI
             // fals mann die map noch offen hat wird sie versteckt dass man den fahrplan sieht
             btnclose.Visible = false;
             wbGmaps.Visible = false;
-            // Wenn man den knopf Abfahrt gedrückt hat, die felder Von und Nach leer lässt kommt die fehler meldung dass man eine station angeben muss.
+            // Wenn man den knopf Abfahrt gedrückt hat und die felder Von und Nach leer lässt kommt die fehler meldung dass man eine station angeben muss.
             // Wenn man den knopf Abfahrt gedrückt hat und etwas eingegeben hatt wird die tabelle abgerufen
             if (txtVon.Text == string.Empty)
             {
@@ -178,7 +196,7 @@ namespace GUI
             }
             else
             {
-                Get_Grid();
+                GetGrid();
             }
         }
 
@@ -195,12 +213,97 @@ namespace GUI
             }
             else
             {
-                Get_2_Grid();
+                GetGrid2();
             }
         }
 
+        private void txtVon_Click(object sender, EventArgs e)
+        {
+            // nach dem man in der list box einen ort doppel klickt verschwindet die lbx und so erscheint sie wieder wenn man auf die textbox drückt
+            lbxVon.Visible = true;
+        }
+
+        private void txtNach_Click(object sender, EventArgs e)
+        {
+            // nach dem man in der list box einen ort doppel klickt verschwindet die lbx und so erscheint sie wieder wenn man auf die textbox drückt
+            lbxNach.Visible = true;
+        }
+
+        private void txtVon_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Mit der pfeil taste runter kann man in der listbox Von eine auswahl nach unten gehen wenn man in der textbox Von ist. 
+            if (e.KeyCode == Keys.Down)
+            {
+                lbxVon.Focus();
+                lbxVon.SelectedIndex = -1;
+            }
+
+            // Mit der pfeil taste hoch kann man in der listbox Von eine auswahl nach oben gehen wenn man in der textbox Von ist.
+            if (e.KeyCode == Keys.Up)
+            {
+                lbxVon.Focus();
+                lbxVon.SelectedIndex = +1;
+            }
+        }
+
+        private void lbxVon_KeyDown(object sender, KeyEventArgs e)
+        {
+            // mit der taste enter kann man die auswahl von der listbox in die text box einfügen.
+            if (e.KeyCode == Keys.Enter)
+            {
+                //  wenn der radiobutton suchen angekreuzt ist geht der fokus auf textbox nach
+                if (btnSuchen.Visible == true)
+                {
+                    txtVon.Text = Convert.ToString(lbxVon.SelectedItem);
+                    lbxVon.Visible = false;
+                    txtNach.Focus();
+                }
+                // sonst geht der fokus auf den knop abfahrt
+                else
+                {
+
+                    txtVon.Text = Convert.ToString(lbxVon.SelectedItem);
+                    lbxVon.Visible = false;
+                    btnAbfahrt.Focus();
+                }
+            }
+        }
+
+        private void txtNach_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Mit der pfeil taste runter kann man in der listbox Nach eine auswahl nach unten gehen wenn man in der textbox Nach ist.
+            if (e.KeyCode == Keys.Down)
+            {
+                lbxNach.Focus();
+                lbxNach.SelectedIndex = -1;
+            }
+            // Mit der pfeil taste hoch kann man in der listbox Nach eine auswahl nach oben gehen wenn man in der textbox Nach ist.
+            if (e.KeyCode == Keys.Up)
+            {
+                lbxNach.Focus();
+                lbxNach.SelectedIndex = +1;
+            }
+        }
+
+        private void lbxNach_KeyDown(object sender, KeyEventArgs e)
+        {
+            // mit der taste enter kann man die auswahl von der listbox in die text box einfügen und der fokus geht auf den knopf suchen.
+            if (e.KeyCode == Keys.Enter)
+            {
+                txtNach.Text = Convert.ToString(lbxNach.SelectedItem);
+                lbxNach.Visible = false;
+                btnSuchen.Focus();
+
+            }
+        }
+
+        #endregion
+
+        #region Radio buttons
+
         private void rdoAbfahrt_CheckedChanged(object sender, EventArgs e)
         {
+            //Wenn der radiobutton Suche gedrückt wurde verschwindet alles bis auf den knopf abfahrt der erscheint.
             if (rdoAbfahrt.Checked)
             {
                 btnSuchen.Visible = false;
@@ -209,13 +312,13 @@ namespace GUI
                 btnAbfahrt.Visible = true;
                 lblNach.Visible = false;
                 dtpDatum.Visible = false;
-                dtpTime.Visible = false;
+                
             }
         }
 
         private void rdoSuche_CheckedChanged(object sender, EventArgs e)
         {
-            //Wenn der radiobutton Suche gedrückt wurde erscheint alles wider bis auf den knopf abfahrt der verschwindet
+            //Wenn der radiobutton Suche gedrückt wurde erscheint alles wider bis auf den knopf abfahrt der verschwindet.
             if (rdoSuche.Checked)
             {
                 // 
@@ -229,109 +332,14 @@ namespace GUI
             }
         }
 
-        private void txtVon_Click(object sender, EventArgs e)
-        {
-            // nach dem man in der list box einen ort doppel klickt verschwindet die lbx und so erscheint sie wieder wenn man auf die textbox drückt
-            lbxVon.Visible = true;
-        }
+        #endregion
 
-        private void txtNach_Click(object sender, EventArgs e)
-        {
-            // nach dem man in der list box einen ort doppel klickt verschwindet die lbx und so erscheint sie wieder wenn man auf die textbox drückt
-            lbxNach.Visible = true; 
-        }
-
-        private void creategmapstation(string x, string y)
-        {
-            string url = "https://www.google.ch/maps/place/" + x + "," + y;
-            wbGmaps.Navigate(url);
-        }
-
-        private void btnGmaps_Click(object sender, EventArgs e)
-        {
-            btnclose.Visible = true;
-            wbGmaps.Visible = true;
-            if (txtStation.Text != string.Empty)
-            {
-                Stations stations = transport.GetStations(txtStation.Text);
-                Station station = stations.StationList[0];
-                creategmapstation(Convert.ToString(station.Coordinate.XCoordinate).Replace(',', '.'), Convert.ToString(station.Coordinate.YCoordinate).Replace(',', '.'));
-            }
-            else
-            {
-                MessageBox.Show("Gib eine Station an","Station nicht gefunden", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void btnclose_Click(object sender, EventArgs e)
-        {
-            btnclose.Visible = false;
-            wbGmaps.Visible = false;
-        }
-
-        private void txtVon_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ( e.KeyCode == Keys.Down)
-            {
-                lbxVon.Focus();
-                lbxVon.SelectedIndex = -1;
-            }
-            if(e.KeyCode == Keys.Up)
-            {
-                lbxVon.Focus();
-                lbxVon.SelectedIndex = +1;
-            }
-        }
-
-        private void lbxVon_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                if (btnSuchen.Visible == true)
-                {
-                    txtVon.Text = Convert.ToString(lbxVon.SelectedItem);
-                    lbxVon.Visible = false;
-                    txtNach.Focus();
-                }
-                else
-                {
-
-                    txtVon.Text = Convert.ToString(lbxVon.SelectedItem);
-                    lbxVon.Visible = false;
-                    btnAbfahrt.Focus();
-                }
-            }
-        }
-
-        private void txtNach_KeyDown(object sender, KeyEventArgs e)
-        {
-            /*if (e.KeyCode == Keys.Down)
-            {
-                lbxNach.Focus();                            Ich habe hier versuch zu machen dass ich mit den pfeil tasten in der listbox rumsuchen kann
-                lbxNach.SelectedIndex = -1;                 aber aus irgendeinem grund drückt es enter ich habe den fehler nicht gefunden
-            }
-            if (e.KeyCode == Keys.Up)                           
-            {
-                lbxNach.Focus();
-                lbxNach.SelectedIndex = +1;
-            }*/
-        }
-
-        private void lbxNach_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                txtNach.Text = Convert.ToString(lbxNach.SelectedItem);
-                lbxNach.Visible = false;
-                btnSuchen.Focus();
-
-            }
-        }
+        #region Email
 
         private void btnEmailsenden_Click(object sender, EventArgs e)
         {
             if (txtEmail.Text == "")
-                MessageBox.Show("Bitte geben Sie eine Email-Adresse ein!");
+                MessageBox.Show("Gib in das feld Email deine Email ein", "Keine Email eingegeben", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
                 try
@@ -341,7 +349,7 @@ namespace GUI
                     mail.To.Add(new MailAddress(Convert.ToString(this.txtEmail)));
                     mail.Subject = "Fahrplan tabelle";
                     mail.Body = "Das ist die Email für den fahrplan den sie wollten. ";
-                    mail.Body += "<b>" + Get_TableFromDataGrid() + "</b>";
+                    mail.Body += "<b>" + GetTableFromDataGrid() + "</b>";
                     mail.IsBodyHtml = true;
                     SmtpClient SmtpServer = new SmtpClient();
                     SmtpServer.Host = "smtp.gmail.com";
@@ -357,5 +365,95 @@ namespace GUI
                 }
             }
         }
+
+
+        #endregion
+
+        #region Googlemaps
+
+        private void txtStation_TextChanged(object sender, EventArgs e)
+        {
+            GetStations(txtStation.Text, lbxStation);
+        }
+
+        private void txtStation_Click(object sender, EventArgs e)
+        {
+            lbxStation.Visible = true;
+        }
+
+        private void lbxStation_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                txtStation.Text = Convert.ToString(lbxStation.SelectedItem);
+                lbxStation.Visible = false;
+                btnGmaps.Focus();
+
+            }
+        }
+
+        private void txtStation_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Down)
+            {
+                lbxStation.Focus();
+                lbxStation.SelectedIndex = -1;
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                lbxStation.Focus();
+                lbxStation.SelectedIndex = +1;
+            }
+        }
+
+        private void lbxStation_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            txtStation.Text = lbxStation.SelectedItem.ToString();
+            lbxStation.Visible = false;
+        }
+
+        private void btnGmaps_Click(object sender, EventArgs e)
+        {
+            lbxStation.Visible = false;
+            btnclose.Visible = true;
+            wbGmaps.Visible = true;
+            if (txtStation.Text != string.Empty)
+            {
+                Stations stations = transport.GetStations(txtStation.Text);
+                Station station = stations.StationList[0];
+                creategmapstation(Convert.ToString(station.Coordinate.XCoordinate).Replace(',', '.'), Convert.ToString(station.Coordinate.YCoordinate).Replace(',', '.'));
+            }
+            else
+            {
+                MessageBox.Show("Gib eine Station an", "Station nicht gefunden", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void creategmapstation(string x, string y)
+        {
+            string url = "https://www.google.ch/maps/place/" + x + "," + y;
+            wbGmaps.Navigate(url);
+        }
+
+        private void googleMapsStationsNearUrl()
+        {
+            string url = "https://www.google.com/maps/search/transit+stop+near/";
+            wbGmaps.Navigate(url);
+        }
+
+        private void btnNear_Click(object sender, EventArgs e)
+        {
+            googleMapsStationsNearUrl();
+            wbGmaps.Visible = true;
+        }
+
+        private void btnclose_Click(object sender, EventArgs e)
+        {
+            btnclose.Visible = false;
+            wbGmaps.Visible = false;
+        }
+
+
+        #endregion
     }
 }

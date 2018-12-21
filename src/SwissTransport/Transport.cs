@@ -62,9 +62,11 @@ namespace SwissTransport
 
         private static WebRequest CreateWebRequest(string url)
         {
-            var request = WebRequest.Create(url); //URL wird übergeben z.B. http://transport.opendata.ch/v1/locations?query=Luzern
+            //Der link wird übergeben z.B. http://transport.opendata.ch/v1/locations?query=Luzern
+            var request = WebRequest.Create(url);
 
-            var webProxy = WebRequest.DefaultWebProxy; //z.B. 	http://transport.opendata.ch/v1/stationboard?Station=Luzern&id=8505000
+            //z.B. 	http://transport.opendata.ch/v1/stationboard?Station=Luzern&id=8505000
+            var webProxy = WebRequest.DefaultWebProxy;
 
             webProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
             request.Proxy = webProxy;

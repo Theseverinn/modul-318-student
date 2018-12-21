@@ -50,6 +50,8 @@
             this.txtStation = new System.Windows.Forms.TextBox();
             this.btnGmaps = new System.Windows.Forms.Button();
             this.wbGmaps = new System.Windows.Forms.WebBrowser();
+            this.lbxStation = new System.Windows.Forms.ListBox();
+            this.btnNear = new System.Windows.Forms.Button();
             this.grpFahrplan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFahrplan)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -79,6 +81,7 @@
             // 
             // btnEmailsenden
             // 
+            this.btnEmailsenden.ForeColor = System.Drawing.Color.Black;
             this.btnEmailsenden.Location = new System.Drawing.Point(6, 150);
             this.btnEmailsenden.Name = "btnEmailsenden";
             this.btnEmailsenden.Size = new System.Drawing.Size(163, 30);
@@ -108,6 +111,7 @@
             this.grpFahrplan.Controls.Add(this.txtVon);
             this.grpFahrplan.Controls.Add(this.dtpTime);
             this.grpFahrplan.Controls.Add(this.dtpDatum);
+            this.grpFahrplan.ForeColor = System.Drawing.Color.White;
             this.grpFahrplan.Location = new System.Drawing.Point(12, 12);
             this.grpFahrplan.Name = "grpFahrplan";
             this.grpFahrplan.Size = new System.Drawing.Size(430, 191);
@@ -119,7 +123,7 @@
             // 
             this.rdoSuche.AutoSize = true;
             this.rdoSuche.Checked = true;
-            this.rdoSuche.Location = new System.Drawing.Point(284, 15);
+            this.rdoSuche.Location = new System.Drawing.Point(278, 15);
             this.rdoSuche.Name = "rdoSuche";
             this.rdoSuche.Size = new System.Drawing.Size(56, 17);
             this.rdoSuche.TabIndex = 9;
@@ -131,7 +135,7 @@
             // rdoAbfahrt
             // 
             this.rdoAbfahrt.AutoSize = true;
-            this.rdoAbfahrt.Location = new System.Drawing.Point(346, 15);
+            this.rdoAbfahrt.Location = new System.Drawing.Point(340, 15);
             this.rdoAbfahrt.Name = "rdoAbfahrt";
             this.rdoAbfahrt.Size = new System.Drawing.Size(84, 17);
             this.rdoAbfahrt.TabIndex = 10;
@@ -141,6 +145,7 @@
             // 
             // btnAbfahrt
             // 
+            this.btnAbfahrt.ForeColor = System.Drawing.Color.Black;
             this.btnAbfahrt.Location = new System.Drawing.Point(148, 32);
             this.btnAbfahrt.Name = "btnAbfahrt";
             this.btnAbfahrt.Size = new System.Drawing.Size(103, 21);
@@ -157,8 +162,8 @@
             this.lbxNach.Name = "lbxNach";
             this.lbxNach.Size = new System.Drawing.Size(133, 121);
             this.lbxNach.TabIndex = 4;
-            this.lbxNach.SelectedIndexChanged += new System.EventHandler(this.lbxNach_SelectedIndexChanged);
             this.lbxNach.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxNach_KeyDown);
+            this.lbxNach.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbxNach_MouseDoubleClick);
             // 
             // lbxVon
             // 
@@ -200,12 +205,14 @@
             // 
             // btnSuchen
             // 
+            this.btnSuchen.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnSuchen.ForeColor = System.Drawing.Color.Black;
             this.btnSuchen.Location = new System.Drawing.Point(287, 32);
             this.btnSuchen.Name = "btnSuchen";
             this.btnSuchen.Size = new System.Drawing.Size(75, 21);
             this.btnSuchen.TabIndex = 7;
             this.btnSuchen.Text = "Suchen";
-            this.btnSuchen.UseVisualStyleBackColor = true;
+            this.btnSuchen.UseVisualStyleBackColor = false;
             this.btnSuchen.Click += new System.EventHandler(this.btnSuchen_Click);
             // 
             // txtVon
@@ -231,6 +238,7 @@
             // 
             this.groupBox1.Controls.Add(this.txtEmail);
             this.groupBox1.Controls.Add(this.btnEmailsenden);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(712, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(175, 191);
@@ -240,9 +248,12 @@
             // 
             // grpGmap
             // 
+            this.grpGmap.Controls.Add(this.btnNear);
+            this.grpGmap.Controls.Add(this.lbxStation);
             this.grpGmap.Controls.Add(this.btnclose);
             this.grpGmap.Controls.Add(this.txtStation);
             this.grpGmap.Controls.Add(this.btnGmaps);
+            this.grpGmap.ForeColor = System.Drawing.Color.White;
             this.grpGmap.Location = new System.Drawing.Point(448, 12);
             this.grpGmap.Name = "grpGmap";
             this.grpGmap.Size = new System.Drawing.Size(258, 191);
@@ -252,6 +263,7 @@
             // 
             // btnclose
             // 
+            this.btnclose.ForeColor = System.Drawing.Color.Black;
             this.btnclose.Location = new System.Drawing.Point(6, 150);
             this.btnclose.Name = "btnclose";
             this.btnclose.Size = new System.Drawing.Size(30, 30);
@@ -262,16 +274,20 @@
             // 
             // txtStation
             // 
-            this.txtStation.Location = new System.Drawing.Point(6, 124);
+            this.txtStation.Location = new System.Drawing.Point(6, 33);
             this.txtStation.Name = "txtStation";
             this.txtStation.Size = new System.Drawing.Size(246, 20);
             this.txtStation.TabIndex = 11;
+            this.txtStation.Click += new System.EventHandler(this.txtStation_Click);
+            this.txtStation.TextChanged += new System.EventHandler(this.txtStation_TextChanged);
+            this.txtStation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtStation_KeyDown);
             // 
             // btnGmaps
             // 
+            this.btnGmaps.ForeColor = System.Drawing.Color.Black;
             this.btnGmaps.Location = new System.Drawing.Point(42, 150);
             this.btnGmaps.Name = "btnGmaps";
-            this.btnGmaps.Size = new System.Drawing.Size(210, 30);
+            this.btnGmaps.Size = new System.Drawing.Size(103, 30);
             this.btnGmaps.TabIndex = 12;
             this.btnGmaps.Text = "Google Maps";
             this.btnGmaps.UseVisualStyleBackColor = true;
@@ -286,10 +302,33 @@
             this.wbGmaps.TabIndex = 9;
             this.wbGmaps.Visible = false;
             // 
+            // lbxStation
+            // 
+            this.lbxStation.FormattingEnabled = true;
+            this.lbxStation.Location = new System.Drawing.Point(6, 59);
+            this.lbxStation.Name = "lbxStation";
+            this.lbxStation.Size = new System.Drawing.Size(246, 82);
+            this.lbxStation.TabIndex = 14;
+            this.lbxStation.Visible = false;
+            this.lbxStation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxStation_KeyDown);
+            this.lbxStation.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbxStation_MouseDoubleClick);
+            // 
+            // btnNear
+            // 
+            this.btnNear.ForeColor = System.Drawing.Color.Black;
+            this.btnNear.Location = new System.Drawing.Point(151, 150);
+            this.btnNear.Name = "btnNear";
+            this.btnNear.Size = new System.Drawing.Size(101, 30);
+            this.btnNear.TabIndex = 15;
+            this.btnNear.Text = "Nächste Station";
+            this.btnNear.UseVisualStyleBackColor = true;
+            this.btnNear.Click += new System.EventHandler(this.btnNear_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(899, 564);
             this.Controls.Add(this.wbGmaps);
             this.Controls.Add(this.dgvFahrplan);
@@ -298,7 +337,7 @@
             this.Controls.Add(this.grpFahrplan);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "SBB Fahrplan";
             this.grpFahrplan.ResumeLayout(false);
             this.grpFahrplan.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFahrplan)).EndInit();
@@ -334,6 +373,8 @@
         private System.Windows.Forms.Button btnGmaps;
         private System.Windows.Forms.WebBrowser wbGmaps;
         private System.Windows.Forms.Button btnclose;
+        private System.Windows.Forms.ListBox lbxStation;
+        private System.Windows.Forms.Button btnNear;
     }
 }
 
